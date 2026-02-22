@@ -3,7 +3,6 @@ from datetime import datetime
 from typing import List, NamedTuple
 from .exec import execute_and_commit, execute_and_fetchall
 from .account import username_valid
-from .web import get_amount
 
 DEMO_CUTOFF_DATE = datetime(2019, 8, 24)
 UserBalance = namedtuple('UserBalance', 'username, amount')
@@ -59,39 +58,7 @@ def get_latest_balances_by_chat_id(chat_id: int) -> List[NamedTuple]:
             AND subscription.chat_id = {chat_id}
     """
     rows = execute_and_fetchall(query)
-    db_balances = [UserBalance(*row) for row in rows]
-
-    query = f"""
-        SELECT DISTINCT account.username, account.password
-        FROM subscription
-        INNER JOIN account
-            ON account.username = subscription.username
-        WHERE subscription.chat_id = {chat_id}
-    """
-    accounts = execute_and_fetchall(query)
-    web_balances = []
-    for username, password in accounts:
-        amount = get_amount(username, password)
-        web_balances.append(UserBalance(username, amount))
-
-    def get_matching_db_balance(web_balance):
-        for db_balance in db_balances:
-            if db_balance.username == web_balance.username:
-                return db_balance
-        return None
-
-    # retrieve from db if web is not available
-    balances = []
-    for web_balance in web_balances:
-        if web_balance.amount != -1:
-            balances.append(web_balance)
-        else:
-            db_balance = get_matching_db_balance(web_balance)
-            if db_balance is not None:
-                balances.append(db_balance)
-            else:
-                balances.append(web_balance)
-    return sorted(balances)
+    return sorted(UserBalance(*row) for row in rows)
 
 
 def insert_balance(username, retrieve_date, amount) -> None:
