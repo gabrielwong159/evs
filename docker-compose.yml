@@ -56,25 +56,17 @@ services:
       WEB_API_PORT: "8080"
     restart: "on-failure"
 
-  nginx:
+  caddy:
     depends_on:
       - frontend_api
-    image: nginx:1.23
+    image: caddy:2
     ports:
       - 80:80
       - 443:443
     volumes:
-      - ./hosts/nginx/nginx.conf/:/etc/nginx/conf.d/nginx.conf:ro
-      - certbot-www:/var/www/certbot/:ro
-      - certbot-conf:/etc/nginx/ssl/:ro
-
-  certbot:
-    depends_on:
-      - nginx
-    image: certbot/certbot:v1.28.0
-    volumes:
-      - certbot-www:/var/www/certbot/
-      - certbot-conf:/etc/letsencrypt/
+      - ./hosts/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
 
   telebot:
     depends_on:
@@ -104,5 +96,5 @@ services:
       - "3000:3000"
 
 volumes:
-  certbot-www:
-  certbot-conf:
+  caddy_data:
+  caddy_config:
