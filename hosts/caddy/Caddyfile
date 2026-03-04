@@ -1,0 +1,3 @@
+api.evs.gabrielwong.dev {
+    reverse_proxy frontend_api:8080
+}
