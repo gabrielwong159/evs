@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 
 from routes import validate, credit, transaction
-from routes import account, balance, subscription, notification, command
+from routes import account, balance, subscription, notification, command, telemsg
 
 
 def create_app():
@@ -16,6 +16,7 @@ def create_app():
     app.register_blueprint(subscription.bp)
     app.register_blueprint(notification.bp)
     app.register_blueprint(command.bp)
+    app.register_blueprint(telemsg.bp)
     return app
 
 
