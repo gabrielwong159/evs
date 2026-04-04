@@ -36,7 +36,7 @@ class EvsClient:
 
     @staticmethod
     def _get_balance_from_text(text: str) -> float:
-        pattern = r'S\$ ((\d{1,3},)*\d{1,3}\.\d{2})'
+        pattern = r'S\$ (-?((\d{1,3},)*\d{1,3})\.\d{2})'
         matches = re.findall(pattern, text)
         assert len(matches) > 1, 'Could not find balance on page'
         match = matches[0][0].replace(',', '')

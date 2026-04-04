@@ -46,6 +46,10 @@ class TestGetBalanceFromText(TestCase):
         with self.assertRaises(AssertionError):
             EvsClient._get_balance_from_text('S$ 10' * 2)
 
+    def test_negative(self):
+        text = 'S$ -1.00' * 2
+        self.assertEqual(EvsClient._get_balance_from_text(text), -1.0)
+
 
 class TestEvsClientLogin(BaseTest):
     def test_login_is_valid(self):
