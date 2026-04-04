@@ -29,6 +29,11 @@ notify:
 telebot:
   uv run python -m app.scripts.telebot
 
+# Run Caddy
+[group('run')]
+reverse-proxy:
+  caddy run --config ./hosts/caddy/Caddyfile
+
 [group('dev')]
 test:
   uv run pytest tests/
