@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from clients.evs import EvsClient
+from app.clients.evs import EvsClient
 from tests.base_test import BaseTest
 
 

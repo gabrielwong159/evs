@@ -2,9 +2,9 @@ from datetime import datetime
 
 from bs4 import BeautifulSoup
 
-from clients.evs import EvsClient
-from models.transaction import Transaction
-from services.transaction import TransactionService
+from app.clients.evs import EvsClient
+from app.models.transaction import Transaction
+from app.services.transaction import TransactionService
 from tests.base_test import BaseTest
 
 

@@ -1,6 +1,6 @@
-from clients.evs import EvsClient
-from models.exception import LoginError
-from services.balance import BalanceService
+from app.clients.evs import EvsClient
+from app.models.exception import LoginError
+from app.services.balance import BalanceService
 from tests.base_test import BaseTest
 
 
