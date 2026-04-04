@@ -3,7 +3,7 @@ from functools import wraps
 from flask import request
 from requests.exceptions import ConnectionError
 
-from models.exception import LoginError
+from app.models.exception import LoginError
 
 
 def catch_errors(route_func):

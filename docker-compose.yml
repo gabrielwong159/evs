@@ -56,18 +56,6 @@ services:
       WEB_API_PORT: "8080"
     restart: "on-failure"
 
-  caddy:
-    depends_on:
-      - frontend_api
-    image: caddy:2
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ./hosts/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
-
   telebot:
     depends_on:
       - db_api
@@ -94,7 +82,3 @@ services:
       - ./hosts/grafana/data:/var/lib/grafana
     ports:
       - "3000:3000"
-
-volumes:
-  caddy_data:
-  caddy_config:
