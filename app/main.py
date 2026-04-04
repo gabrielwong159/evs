@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_cors import CORS
 
-from app.routes import validate, credit, transaction
-from app.routes import account, balance, subscription, notification, command, telemsg
+from app.routes import validate, credit
+from app.routes import account, balance, subscription, notification, command, telemsg, info
 
 
 def create_app():
@@ -10,13 +10,13 @@ def create_app():
     CORS(app)
     app.register_blueprint(validate.bp)
     app.register_blueprint(credit.bp)
-    app.register_blueprint(transaction.bp)
     app.register_blueprint(account.bp)
     app.register_blueprint(balance.bp)
     app.register_blueprint(subscription.bp)
     app.register_blueprint(notification.bp)
     app.register_blueprint(command.bp)
     app.register_blueprint(telemsg.bp)
+    app.register_blueprint(info.bp)
     return app
 
 

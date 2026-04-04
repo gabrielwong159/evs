@@ -9,18 +9,6 @@ from app.services.db_balance import DbBalanceService
 bp = Blueprint('balance', __name__)
 
 
-@bp.route('/balance/username/<username>')
-def get_balances_by_username(username):
-    service = DbBalanceService(DbClient())
-    return json.dumps(service.get_balances_by_username(username))
-
-
-@bp.route('/balance/username/demo/<username>')
-def get_demo_balances_by_username(username):
-    service = DbBalanceService(DbClient())
-    return json.dumps(service.get_demo_balances_by_username(username))
-
-
 @bp.route('/balance/chatid/<chat_id>')
 def get_latest_balances_by_chat_id(chat_id):
     service = DbBalanceService(DbClient())
