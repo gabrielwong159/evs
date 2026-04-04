@@ -4,7 +4,7 @@ import bs4
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-from models.transaction import Transaction
+from app.models.transaction import Transaction
 
 BASE_URL = 'https://nus-utown.evs.com.sg/SUTDMain'
 LOGIN_URL = f'{BASE_URL}/loginServlet'

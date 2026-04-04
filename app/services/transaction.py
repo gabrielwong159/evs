@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from clients.evs import EvsClient
-from models.exception import LoginError
+from app.clients.evs import EvsClient
+from app.models.exception import LoginError
 
 
 class TransactionService:

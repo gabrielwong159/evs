@@ -3,8 +3,8 @@ import json
 from flask import Blueprint, request
 from operator import itemgetter
 
-from clients.evs import EvsClient
-from routes import catch_errors
+from app.clients.evs import EvsClient
+from app.routes import catch_errors
 
 bp = Blueprint('validate', __name__)
 
