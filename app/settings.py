@@ -5,3 +5,6 @@ DB_PORT = os.environ.get('DB_PORT', 5432)
 DB_NAME = os.environ.get('DB_NAME', 'evs')
 DB_USER = os.environ.get('DB_USER', 'postgres')
 DB_PASS = os.environ.get('DB_PASS', 'docker')
+
+TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN')
+TELEGRAM_ADMIN_ID = os.environ.get('TELEGRAM_ADMIN_ID')
