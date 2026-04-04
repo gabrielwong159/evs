@@ -10,7 +10,10 @@ dependencies = [
     "flask-cors>=5.0.0",
     "gunicorn>=25.1.0",
     "psycopg2-binary>=2.9.0",
+    "python-telegram-bot>=13.5,<14",
     "requests>=2.32.5",
+    "setuptools>=40.0,<71",
+    "urllib3>=1.26,<2",
 ]
 
 [dependency-groups]

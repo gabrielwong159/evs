@@ -1,10 +1,8 @@
-import json
-import requests
-from collections import namedtuple
 from telegram.ext import CommandHandler
 
-from ..config import DB_API_HOST, DB_API_PORT
-from .logging import logger, log_command_in_db
+from app.clients.db import DbClient
+from app.services.db_balance import DbBalanceService
+from app.telebot.handlers.logging import logger, log_command_in_db
 
 handlers = []
 
@@ -19,7 +17,6 @@ def register_command_handler(command: str):
 @register_command_handler('start')
 def start(update, context):
     log_command('start', update.message.chat_id)
-
     text = ('Hi! Receive notifications when your EVS credit balance '
             'falls below a specified threshold.\n\n'
             'To begin, use the /add command to create a subscription.\n\n'
@@ -29,7 +26,7 @@ def start(update, context):
 
 
 @register_command_handler('about')
-def start(update, context):
+def about(update, context):
     log_command('about', update.message.chat_id)
     text = (
         'This bot works by simply logging into your account on your behalf '
@@ -44,18 +41,16 @@ def start(update, context):
 @register_command_handler('balance')
 def balance(update, context):
     chat_id = update.message.chat_id
-    log_command('balance', update.message.chat_id)
+    log_command('balance', chat_id)
 
-    user_balances = get_latest_balances_by_chat_id(chat_id)
-    if len(user_balances) == 0:
+    user_balances = DbBalanceService(DbClient()).get_latest_balances_by_chat_id(chat_id)
+    if not user_balances:
         text = ('No entries found. '
                 'Either you do not have an existing subscription, '
                 'or your credit balances have not been retrieved yet.')
-        context.bot.send_message(chat_id=chat_id, text=text)
     else:
-        text = '\n'.join(f'• {balance.username} - ${balance.amount:.2f}'
-                         for balance in user_balances)
-        context.bot.send_message(chat_id=chat_id, text=text)
+        text = '\n'.join(f'• {b.username} - ${b.amount:.2f}' for b in user_balances)
+    context.bot.send_message(chat_id=chat_id, text=text)
 
 
 @register_command_handler('dashboard')
@@ -72,15 +67,6 @@ def security(update, context):
     text = ('Your credentials are being stored in plaintext. '
             'Please do not use this bot if it makes you uncomfortable.')
     context.bot.send_message(chat_id=update.message.chat_id, text=text)
-
-
-def get_latest_balances_by_chat_id(chat_id):
-    UserBalance = namedtuple('UserBalance', 'username, amount')
-
-    url = f'http://{DB_API_HOST}:{DB_API_PORT}/balance/chatid/{chat_id}'
-    req = requests.get(url)
-    rows = json.loads(req.text)
-    return [UserBalance(*row) for row in rows]
 
 
 def log_command(name: str, chat_id: int):
