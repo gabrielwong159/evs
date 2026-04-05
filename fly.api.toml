@@ -1,0 +1,19 @@
+app = "evs-api"
+primary_region = "sin"
+
+[build]
+
+[http_service]
+  internal_port = 8080
+  processes = ["app"]
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
+
+[processes]
+  app = "gunicorn -w 2 -b 0.0.0.0:8080 'app.main:app'"
