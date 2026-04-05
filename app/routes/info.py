@@ -16,7 +16,8 @@ bp = Blueprint('info', __name__)
 
 logger = logging.getLogger(__name__)
 
-DEMO_JSON_PATH = os.environ.get('DEMO_JSON_PATH', 'demo.json')
+DEMO_USERNAME = os.environ.get('DEMO_USERNAME')
+DEMO_PASSWORD = os.environ.get('DEMO_PASSWORD')
 
 
 @bp.route('/info', methods=['POST'])
@@ -35,12 +36,7 @@ def get_info():
 @bp.route('/info/demo')
 def get_demo_info():
     logger.info('Demo')
-
-    with open(DEMO_JSON_PATH) as f:
-        obj = json.load(f)
-    username, password = itemgetter('username', 'password')(obj)
-
-    return json.dumps(_build_info(username, password, demo=True))
+    return json.dumps(_build_info(DEMO_USERNAME, DEMO_PASSWORD, demo=True))
 
 
 def _build_info(username: str, password: str, demo=False) -> dict:
