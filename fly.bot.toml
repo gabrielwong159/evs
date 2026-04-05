@@ -1,0 +1,12 @@
+app = "evs-bot"
+primary_region = "sin"
+
+[build]
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
+
+[processes]
+  bot  = "python -m app.scripts.telebot"
+  cron = "python -m app.scripts.run_daily"
