@@ -6,18 +6,12 @@ from app.models.account import Account
 from app.models.balance import UserBalance
 from app.models.notification import Notification
 from app.models.subscription import Subscription
-from app.settings import DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASS
+from app.settings import DATABASE_URL
 
 
 class DbClient:
     def _get_connection(self):
-        return psycopg2.connect(
-            dbname=DB_NAME,
-            user=DB_USER,
-            password=DB_PASS,
-            host=DB_HOST,
-            port=DB_PORT,
-        )
+        return psycopg2.connect(DATABASE_URL)
 
     def _execute_and_commit(self, query: str) -> None:
         with self._get_connection() as conn:
