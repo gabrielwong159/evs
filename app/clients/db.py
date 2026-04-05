@@ -14,16 +14,22 @@ class DbClient:
         return psycopg2.connect(DATABASE_URL)
 
     def _execute_and_commit(self, query: str) -> None:
-        with self._get_connection() as conn:
+        conn = self._get_connection()
+        try:
             with conn.cursor() as cursor:
                 cursor.execute(query)
                 conn.commit()
+        finally:
+            conn.close()
 
     def _execute_and_fetchall(self, query: str) -> list:
-        with self._get_connection() as conn:
+        conn = self._get_connection()
+        try:
             with conn.cursor() as cursor:
                 cursor.execute(query)
                 return cursor.fetchall()
+        finally:
+            conn.close()
 
     @staticmethod
     def _format_date(date) -> str:
