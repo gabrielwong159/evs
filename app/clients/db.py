@@ -1,3 +1,4 @@
+import time
 from datetime import datetime
 
 import psycopg2
@@ -8,10 +9,19 @@ from app.models.notification import Notification
 from app.models.subscription import Subscription
 from app.settings import DATABASE_URL
 
+_DB_STARTUP_RETRIES = 5
+_DB_STARTUP_RETRY_DELAY_S = 2
+
 
 class DbClient:
     def _get_connection(self):
-        return psycopg2.connect(DATABASE_URL)
+        for attempt in range(_DB_STARTUP_RETRIES):
+            try:
+                return psycopg2.connect(DATABASE_URL)
+            except psycopg2.OperationalError:
+                if attempt == _DB_STARTUP_RETRIES - 1:
+                    raise
+                time.sleep(_DB_STARTUP_RETRY_DELAY_S)
 
     def _execute_and_commit(self, query: str) -> None:
         with self._get_connection() as conn:
